@@ -12,11 +12,19 @@ readonly HERE=$(dirname "$rl")
 
 
 warn() {
-    echo -n -e '\033[1;33mWARN\033[0m ' >&2
+    if [[ -t 2 ]]; then
+        echo -n -e '\033[1;33mWARN\033[0m ' >&2
+    else
+        echo -n 'WARN ' >&2
+    fi
     echo "$@" >&2
 }
 error() {
-    echo -n -e '\033[1;31mERROR\033[0m ' >&2
+    if [[ -t 2 ]]; then
+        echo -n -e '\033[1;31mERROR\033[0m ' >&2
+    else
+        echo -n 'ERROR ' >&2
+    fi
     echo "$@" >&2
     exit 1
 }
@@ -50,8 +58,8 @@ fi
 # check with flake8
 if [[ -n "`command -v flake8`" ]]; then
     output=cat
-    if [[ -t 1 ]]; then
-        # fd 1 is terminal => colored output
+    if [[ -t 2 ]]; then
+        # fd 2 is terminal => colored output
         colout=`command -v colout`
         if [[ -n "$colout" ]]; then
             output="$colout -T $HERE -t flake8"
