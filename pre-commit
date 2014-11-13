@@ -66,7 +66,7 @@ if [[ -n "`command -v flake8`" ]]; then
         fi
     fi
 
-    echo "$diff" | flake8 --diff | $output >&2
+    echo "$diff" | flake8 --diff -j1 | $output >&2
 else
     warn "flake8 not found"
 fi
