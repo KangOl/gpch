@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -o pipefail
 
-if [[ `uname` = 'Darwin' ]]; then
+if [[ $(uname) = 'Darwin' ]]; then
     # no readlink -f on osx :(
     rl=$(python -c 'import os,sys;print os.path.realpath(sys.argv[1])' "$0")
 else
@@ -52,11 +52,11 @@ if [[ $debugger -gt 0 ]]; then
 fi
 
 # check with flake8
-if [[ -n "`command -v flake8`" ]]; then
+if [[ -n "$(command -v flake8)" ]]; then
     output=cat
     if [[ -t 2 ]]; then
         # fd 2 is terminal => colored output
-        colout=`command -v colout`
+        colout=$(command -v colout)
         if [[ -n "$colout" ]]; then
             output="$colout -T $HERE -t flake8"
         fi
