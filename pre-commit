@@ -38,17 +38,13 @@ else
     against=4b825dc642cb6eb9a060e54bf8d69288fbee4904
 fi
 
+# builtin trailing spaces and conflits markers check
+git diff-index --check --cached $against -- >&2
+if [[ $? -ne 0 ]]; then
+    error "git diff --check failed"
+fi
+
 diff=$(git diff -z --cached --diff-filter=ACM $against)
-
-markers=$(echo "$diff" | egrep -c "^\+.*[<=>]{4,}")
-if [[ $markers -gt 0 ]]; then
-    error "Conflict markers found"
-fi
-
-trailing_spaces=$(echo "$diff" | egrep -c '^\+.*\s+$')
-if [[ $trailing_spaces -gt 0 ]]; then
-    error "Trailing spaces found"
-fi
 
 debugger=$(echo "$diff" | egrep -c '^\+.*(debugger|set_trace|pu\.db)')
 if [[ $debugger -gt 0 ]]; then
