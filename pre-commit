@@ -3,7 +3,7 @@ set -o pipefail
 
 if [[ $(uname) = 'Darwin' ]]; then
     # no readlink -f on osx :(
-    rl=$(python -c 'import os,sys;print os.path.realpath(sys.argv[1])' "$0")
+    rl=$(python -c 'import os,sys;print(os.path.realpath(sys.argv[1]))' "$0")
 else
     rl=$(readlink -f "$0")
 fi
