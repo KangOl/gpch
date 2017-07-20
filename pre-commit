@@ -39,14 +39,13 @@ else
 fi
 
 # builtin trailing spaces and conflits markers check
-git diff-index --check --cached $against -- >&2
-if [[ $? -ne 0 ]]; then
+if ! git diff-index --check --cached $against -- >&2; then
     error "git diff --check failed"
 fi
 
 diff=$(git diff -z --cached --diff-filter=ACM $against)
 
-debugger=$(echo "$diff" | egrep -c '^\+.*(debugger|set_trace|pu\.db)')
+debugger=$(echo "$diff" | grep -E -c '^\+.*(debugger|set_trace|pu\.db)')
 if [[ $debugger -gt 0 ]]; then
     error "debugging keyword found"
 fi
