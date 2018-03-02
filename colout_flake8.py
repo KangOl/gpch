@@ -1,4 +1,5 @@
-def theme():
+
+def theme(context=None):
     levels = [
         ('E\d{3}', 'red', ''),
         ('W\d{3}', 'yellow', ''),
@@ -9,7 +10,10 @@ def theme():
         ('Q4\d{2}', 'blue', 'reverse'),     # flake8-SQL
     ]
 
-    return [
+    triplets = [
         [".+:\d+:\d+: (%s) .+" % r, c, s]
         for r, c, s in levels
     ]
+    if context is None:
+        return triplets
+    return context, triplets
