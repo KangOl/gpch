@@ -45,7 +45,7 @@ fi
 
 diff=$(git diff -z --cached --diff-filter=ACM $against)
 
-debugger=$(echo "$diff" | grep -E -c '^\+.*\b(debugger|set_trace|pu\.db|breakpoint)\b')
+debugger=$(echo "$diff" | grep -E -c '^\+.*\b(debugger|set_trace|pu\.db|breakpoint|import q)\b')
 if [[ $debugger -gt 0 ]]; then
     error "debugging keyword found"
 fi
