@@ -54,6 +54,7 @@ if [[ $debugger -gt 0 ]]; then
     error "debugging keyword found"
 fi
 
+status=0
 # check with flake8
 if [[ -n "$(command -v flake8)" ]]; then
     output="cat"
@@ -66,6 +67,20 @@ if [[ -n "$(command -v flake8)" ]]; then
     fi
 
     echo "$diff" | filterdiff -i '*.py' --clean | flake8 --diff -j1 | $output >&2
+    status=$?
 else
     warn "flake8 not found"
 fi
+
+# check with eslint
+if [[ -n "$(command -v eslint)" ]]; then
+    echo "$diff" | "$HERE"/eslint-diff.py >&2
+    es_status=$?
+    if [[ $es_status != 0 ]]; then
+        status=$es_status
+    fi
+else
+    warn "eslint not found"
+fi
+
+exit $status
