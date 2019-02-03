@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+set -u
+# set -x
 set -o pipefail
 
 if [[ $(uname) = 'Darwin' ]]; then
@@ -52,7 +54,7 @@ fi
 
 # check with flake8
 if [[ -n "$(command -v flake8)" ]]; then
-    output=cat
+    output="cat"
     if [[ -t 2 ]]; then
         # fd 2 is terminal => colored output
         colout=$(command -v colout)
